@@ -2,11 +2,11 @@ import React from "react";
 
 const CounterItem = ({ counter, startCounter, stopCounter }) => {
   return (
-    <div className="text-white w-[180px] text-center mb-2 bg-black p-8 rounded-lg">
+    <div className="text-white w-[80%] text-center mb-2 bg-black p-8 rounded-lg sm:w-[31%] md:w-[22%] lg:w-[18%]">
       <button
-        className="border border-blue-400 mb-2 text-base py-2 px-1"
+        className="border border-blue-400 rounded mb-2 text-base py-2 px-1 sm:text-sm md:text-xs"
         onClick={() =>
-          counter.isStart ? stopCounter(counter.id) : startCounter(counter.id)
+          counter.isStart ? stopCounter(counter) : startCounter(counter)
         }
       >
         {counter.isStart ? "Stop Counter" : "Start Counter"}

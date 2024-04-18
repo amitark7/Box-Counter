@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CounterItem from "./CounterItem";
 
 const BoxCounter = () => {
@@ -15,57 +15,59 @@ const BoxCounter = () => {
     setCounters([...counters, newCounter]);
   };
 
-  const startCounter = (id) => {
-    const counter = counters.find((cnt) => cnt.id === id);
-    if (counter && !counter.interValRef) {
-      const interValRef = setInterval(() => {
-        setCounters((prevCounter) => {
-          const update = prevCounter.map((cnt) => {
-            if (cnt.id === id) {
-              return { ...cnt, value: cnt.value + 1 };
-            } else {
-              return cnt;
-            }
-          });
-          return update;
+  const startCounter = (counterValue) => {
+    const interValRef = setInterval(() => {
+      setCounters((prevCounter) => {
+        return prevCounter.map((count) => {
+          if (count.id === counterValue.id) {
+            return { ...count, value: count.value + 1 };
+          }
+          return count;
         });
-      }, 1000);
-      setCounters(
-        counters.map((cnt) => {
-          if (cnt.id === id) {
-            return { ...cnt, isStart: true, interValRef };
-          } else {
-            return cnt;
-          }
-        })
-      );
-    }
+      });
+    }, 1000);
+    setCounters(
+      counters.map((count) => {
+        if (count.id === counterValue.id) {
+          return { ...count, isStart: true, interValRef };
+        } else {
+          return count;
+        }
+      })
+    );
   };
-  const stopCounter = (id) => {
-    const counter = counters.find((cnt) => cnt.id === id);
-    if (counter && counter.interValRef) {
-      clearInterval(counter.interValRef);
-      setCounters(
-        counters.map((cnt) => {
-          if (cnt.id === id) {
-            return { ...cnt, isStart: false, interValRef: null };
-          } else {
-            return cnt;
-          }
-        })
-      );
-    }
+
+  const stopCounter = (counter) => {
+    clearInterval(counter.interValRef);
+    setCounters(
+      counters.map((count) => {
+        if (count.id === counter.id) {
+          return { ...count, isStart: false, interValRef: null };
+        } else {
+          return count;
+        }
+      })
+    );
   };
+
+  useEffect(() => {
+    setTotalCount(counters.reduce((acc, count) => acc + count.value, 0));
+  }, [counters]);
 
   return (
     <>
       <div className=" flex items-center justify-between px-20 py-10">
-        <button className="p-3 bg-sky-900 text-white" onClick={addCounter}>
+        <button
+          className="p-3 bg-sky-900 text-white rounded"
+          onClick={addCounter}
+        >
           Add Counter
         </button>
-        <p className="border bg-black text-white p-2 text-lg">{totalCount}</p>
+        <p className="border bg-black text-white p-2 text-lg rounded">
+          {totalCount}
+        </p>
       </div>
-      <div className="w-5/6 flex mx-auto gap-4 flex-wrap">
+      <div className="w-5/6 flex justify-center mx-auto gap-4 flex-wrap sm:justify-normal">
         {counters?.map((counter) => {
           return (
             <CounterItem
