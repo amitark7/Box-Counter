@@ -8,7 +8,7 @@ const BoxCounter = () => {
   const addCounter = () => {
     const newCounter = {
       id: Date.now(),
-      interValRef: null,
+      counterInterValRef: null,
       isStart: false,
       value: 0,
     };
@@ -29,7 +29,7 @@ const BoxCounter = () => {
     setCounters(
       counters.map((count) => {
         if (count.id === counterValue.id) {
-          return { ...count, isStart: true, interValRef };
+          return { ...count, isStart: true, counterInterValRef: interValRef };
         } else {
           return count;
         }
@@ -38,7 +38,7 @@ const BoxCounter = () => {
   };
 
   const stopCounter = (counter) => {
-    clearInterval(counter.interValRef);
+    clearInterval(counter.counterInterValRef);
     setCounters(
       counters.map((count) => {
         if (count.id === counter.id) {
